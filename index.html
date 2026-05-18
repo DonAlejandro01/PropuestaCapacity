@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Horario Personal</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Layout tipo app */
+    main{
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      height:100vh;
+    }
+
+    /* LEFT PANEL */
+    .left{
+      background:#0f172a;
+      color:white;
+      padding:40px 25px;
+      display:flex;
+      flex-direction:column;
+    
+      gap:20px;
+    }
+
+    .left h1{
+      font-size:2rem;
+    }
+
+    .left .role{
+      color:#94a3b8;
+      font-size:0.95rem;
+    }
+
+    .left-buttons{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .left-buttons button{
+      padding:10px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      background:#1e293b;
+      color:white;
+      transition:0.3s;
+    }
+
+    .left-buttons button:hover{
+      background:#0a386d;
+    }
+
+    /* RIGHT PANEL */
+    .right{
+      padding:40px;
+      background:#f8fafc;
+      overflow-y:auto;
+    }
+    .title{
+        margin-bottom:30px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    .title-h1{
+      font-size:1.5rem;
+      margin-bottom:20px;
+      font-weight:bold;
+    }
+    .title p{
+        animation: infinite 1s UpDonwn 0.5s;
+    }
+    @keyframes UpDonwn {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0); }
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      border-radius:12px;
+      overflow:hidden;
+      background:white;
+      box-shadow:0 0 10px rgba(0,0,0,0.05);
+    }
+
+    th{
+      background:#0a386d;
+      color:white;
+      text-align:left;
+      padding:12px;
+      font-size:1.5rem;
+    }
+
+    td{
+      padding:12px;
+      border-bottom:1px solid #e2e8f0;
+      font-size:0.9rem;
+    }
+
+    tr:hover{
+      background:#f1f5f9;
+    }
+    /* Estados */
+    .turno{
+      color:#16a34a;
+      font-weight:bold;
+    }
+    .libre{
+      color:#dc2626;
+      font-weight:bold;
+    }
+    .today{
+      background:#dbeafe;
+      color: #0a386d;
+    }
+    .today td{
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<main>
+
+  <!-- LEFT -->
+  <div class="left">
+    <div>
+      <h1>Alejandro Pérez</h1>
+      <p class="role">Analista de datos</p>
+    </div>
+
+    <div class="left-buttons">
+      <button>Capacitaciones</button>
+      <button>Ver equipo</button>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="title">
+        <h1 class="title-h1">Tu horario</h1>
+        <p>persona</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Día</th>
+          <th>Turno</th>
+          <th>Horario</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr class="today">
+          <td>02-05-2026</td>
+          <td>M108</td>
+          <td class="turno">08:00 - 21:00</td>
+        </tr>
+
+        <tr>
+          <td>03-05-2026</td>
+          <td>M108</td>
+          <td class="turno">08:00 - 21:00</td>
+        </tr>
+
+        <tr>
+          <td>04-05-2026</td>
+          <td>M108</td>
+          <td class="turno">08:00 - 21:00</td>
+        </tr>
+
+        <tr>
+          <td>05-05-2026</td>
+          <td>M108</td>
+          <td class="turno">08:00 - 21:00</td>
+        </tr>
+
+        <tr>
+          <td>06-05-2026</td>
+          <td>M108</td>
+          <td class="turno">08:00 - 21:00</td>
+        </tr>
+
+        <tr>
+          <td>07-05-2026</td>
+          <td>LIB</td>
+          <td class="libre">Libre</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</main>
+
+</body>
+</html>
