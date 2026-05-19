@@ -48,6 +48,10 @@
       flex-direction:column;
       gap:10px;
     }
+    .left-buttons a{
+        color: white;
+        text-decoration: none;
+    }
 
     .left-buttons button{
       padding:10px;
@@ -148,8 +152,8 @@
     </div>
 
     <div class="left-buttons">
-      <button>Capacitaciones</button>
-      <button>Ver equipo</button>
+      <button ><a href="">Capacitaciones</a></button>
+      <button id="Ver horario equipo">Ver equipo</button>
     </div>
   </div>
 
@@ -170,41 +174,7 @@
       </thead>
 
       <tbody>
-        <tr class="today">
-          <td>02-05-2026</td>
-          <td>M108</td>
-          <td class="turno">08:00 - 21:00</td>
-        </tr>
-
-        <tr>
-          <td>03-05-2026</td>
-          <td>M108</td>
-          <td class="turno">08:00 - 21:00</td>
-        </tr>
-
-        <tr>
-          <td>04-05-2026</td>
-          <td>M108</td>
-          <td class="turno">08:00 - 21:00</td>
-        </tr>
-
-        <tr>
-          <td>05-05-2026</td>
-          <td>M108</td>
-          <td class="turno">08:00 - 21:00</td>
-        </tr>
-
-        <tr>
-          <td>06-05-2026</td>
-          <td>M108</td>
-          <td class="turno">08:00 - 21:00</td>
-        </tr>
-
-        <tr>
-          <td>07-05-2026</td>
-          <td>LIB</td>
-          <td class="libre">Libre</td>
-        </tr>
+        
       </tbody>
     </table>
 
@@ -214,3 +184,36 @@
 
 </body>
 </html>
+<script>
+  function loadSchedule(){
+    google.script.run
+      .withSuccessHandler(renderTable)
+      .VerHorario();
+  }
+
+  function renderTable(data){
+    const tbody = document.querySelector("tbody");
+    tbody.innerHTML = "";
+
+    if(data.error){
+      tbody.innerHTML = `<tr><td colspan="3">${data.error}</td></tr>`;
+      return;
+    }
+
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${row.fecha}</td>
+        <td>${row.turno}</td>
+        <td class="${row.horario === 'Libre' ? 'libre' : 'turno'}">
+          ${row.horario}
+        </td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  window.onload = loadSchedule;
+</script>
