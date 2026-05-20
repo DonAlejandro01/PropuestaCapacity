@@ -1,219 +1,259 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Horario Personal</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Horario Personal</title>
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    body{
-      font-family: Arial, Helvetica, sans-serif;
-    }
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f1f5f9;
+      }
 
-    /* Layout tipo app */
-    main{
-      display:grid;
-      grid-template-columns: 320px 1fr;
-      height:100vh;
-    }
+      main {
+        display: grid;
+        grid-template-columns: 300px 600px;
+        gap: 40px;
+        align-items: stretch;
+      }
+      section {
+        background: #ffffff;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
 
-    /* LEFT PANEL */
-    .left{
-      background:#0f172a;
-      color:white;
-      padding:40px 25px;
-      display:flex;
-      flex-direction:column;
-    
-      gap:20px;
-    }
+      /* LEFT PANEL */
+      .left {
+        padding: 30px 25px;
+        justify-content: flex-start;
+        gap: 25px;
+      }
 
-    .left h1{
-      font-size:2rem;
-    }
+      .left h1 {
+        font-size: 2rem;
+      }
 
-    .left .role{
-      color:#94a3b8;
-      font-size:0.95rem;
-    }
+      .left .role {
+        color: #94a3b8;
+        font-size: 0.95rem;
+      }
 
-    .left-buttons{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .left-buttons a{
+      .left-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .left-buttons a {
         color: white;
         text-decoration: none;
-    }
+      }
 
-    .left-buttons button{
-      padding:10px;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-      background:#1e293b;
-      color:white;
-      transition:0.3s;
-    }
+      .left-buttons button {
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #1e293b;
+        color: white;
+        transition: 0.3s;
+      }
 
-    .left-buttons button:hover{
-      background:#0a386d;
-    }
+      .left-buttons button:hover {
+        background: #0a386d;
+      }
 
-    /* RIGHT PANEL */
-    .right{
-      padding:40px;
-      background:#f8fafc;
-      overflow-y:auto;
-    }
-    .title{
-        margin-bottom:30px;
+      /* RIGHT PANEL */
+      .right {
+        padding: 30px;
+      }
+      .title {
+        margin-bottom: 30px;
         display: flex;
         align-items: center;
         gap: 20px;
-    }
-    .title-h1{
-      font-size:1.5rem;
-      margin-bottom:20px;
-      font-weight:bold;
-    }
-    .title p{
+      }
+      .title-h1 {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+      .title p {
         animation: infinite 1s UpDonwn 0.5s;
-    }
-    @keyframes UpDonwn {
-        0% { transform: translateY(0); }
-        50% { transform: translateY(-5px); }
-        100% { transform: translateY(0); }
-    }
+      }
+      @keyframes UpDonwn {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
 
-    table{
-      width:100%;
-      border-collapse:collapse;
-      border-radius:12px;
-      overflow:hidden;
-      background:white;
-      box-shadow:0 0 10px rgba(0,0,0,0.05);
-    }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      }
 
-    th{
-      background:#0a386d;
-      color:white;
-      text-align:left;
-      padding:12px;
-      font-size:1.5rem;
-    }
+      th {
+        background: #0a386d;
+        color: white;
+        text-align: left;
+        padding: 12px;
+        font-size: 1.5rem;
+      }
 
-    td{
-      padding:12px;
-      border-bottom:1px solid #e2e8f0;
-      font-size:0.9rem;
-    }
+      td {
+        padding: 12px;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 0.9rem;
+      }
 
-    tr:hover{
-      background:#f1f5f9;
-    }
-    /* Estados */
-    .turno{
-      color:#16a34a;
-      font-weight:bold;
-    }
-    .libre{
-      color:#dc2626;
-      font-weight:bold;
-    }
-    .today{
-      background:#dbeafe;
-      color: #0a386d;
-    }
-    .today td{
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
+      tr:hover {
+        background: #f1f5f9;
+      }
+      /* Estados */
+      .turno {
+        color: #16a34a;
+        font-weight: bold;
+      }
+      .libre {
+        color: #dc2626;
+        font-weight: bold;
+      }
+      .today {
+        background: #dbeafe;
+        color: #0a386d;
+      }
+      .today td {
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+      table {
+        font-size: 0.85rem;
+      }
 
-  </style>
-</head>
+      @media (max-width: 900px) {
+        main {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          width: 90%;
+        }
 
-<body>
+        .left,
+        .right {
+          width: 100%;
+        }
 
-<main>
+        .left {
+          align-items: center;
+          text-align: center;
+        }
 
-  <!-- LEFT -->
-  <div class="left">
-    <div>
-      <h1>Alejandro Pérez</h1>
-      <p class="role">Analista de datos</p>
-    </div>
+        .left-buttons {
+          width: 100%;
+        }
 
-    <div class="left-buttons">
-      <button ><a href="">Capacitaciones</a></button>
-      <button id="Ver horario equipo">Ver equipo</button>
-    </div>
-  </div>
+        .left-buttons button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
 
-  <!-- RIGHT -->
-  <div class="right">
-    <div class="title">
-        <h1 class="title-h1">Tu horario</h1>
-        <p>persona</p>
-    </div>
+  <body>
+    <main>
+      <!-- LEFT -->
+      <section class="left">
+        <div>
+          <h1>Nombre de la persona</h1>
+          <p class="role">Area de la persona</p>
+        </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Día</th>
-          <th>Turno</th>
-          <th>Horario</th>
-        </tr>
-      </thead>
+        <div class="left-buttons">
+          <button><a href="">Capacitaciones</a></button>
+          <button id="Ver horario equipo">Ver equipo</button>
+        </div>
+      </section>
 
-      <tbody>
-        
-      </tbody>
-    </table>
-
-  </div>
-
-</main>
-
-</body>
+      <!-- RIGHT -->
+      <section class="right">
+        <table>
+          <thead>
+            <tr>
+              <th>Día</th>
+              <th>Dia semana</th>
+              <th>Horario</th>
+              <th>Jornada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01/02/2026</td>
+              <td class="turno">Lunes</td>
+              <td class="turno">Turno</td>
+              <td class="turno">9:00 - 18:00</td>
+            </tr>
+            <tr>
+              <td>01/02/2026</td>
+              <td>Martes</td>
+              <td>Turno</td>
+              <td>9:00 - 18:00</td>
+            </tr>
+            <tr>
+              <td>01/02/2026</td>
+              <td>Miercoles</td>
+              <td>Turno</td>
+              <td>9:00 - 18:00</td>
+            </tr>
+            <tr>
+              <td>01/02/2026</td>
+              <td>Jueves</td>
+              <td>Turno</td>
+              <td>9:00 - 18:00</td>
+            </tr>
+            <tr>
+              <td>01/02/2026</td>
+              <td>Viernes</td>
+              <td>Turno</td>
+              <td>9:00 - 18:00</td>
+            </tr>
+            <tr>
+              <td>01/02/2026</td>
+              <td>Sabado</td>
+              <td>Turno</td>
+              <td>9:00 - 18:00</td>
+            </tr>
+            <tr>
+              <td>01/02/2026</td>
+              <td>Domingo</td>
+              <td>Turno</td>
+              <td>9:00 - 18:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </body>
 </html>
-<script>
-  function loadSchedule(){
-    google.script.run
-      .withSuccessHandler(renderTable)
-      .VerHorario();
-  }
-
-  function renderTable(data){
-    const tbody = document.querySelector("tbody");
-    tbody.innerHTML = "";
-
-    if(data.error){
-      tbody.innerHTML = `<tr><td colspan="3">${data.error}</td></tr>`;
-      return;
-    }
-
-    data.forEach(row => {
-      const tr = document.createElement("tr");
-
-      tr.innerHTML = `
-        <td>${row.fecha}</td>
-        <td>${row.turno}</td>
-        <td class="${row.horario === 'Libre' ? 'libre' : 'turno'}">
-          ${row.horario}
-        </td>
-      `;
-
-      tbody.appendChild(tr);
-    });
-  }
-
-  window.onload = loadSchedule;
-</script>
+<script src="index.js"></script>
