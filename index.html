@@ -1,259 +1,1372 @@
 <!doctype html>
-<html lang="es">
+<html>
   <head>
+    <base target="_top" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Horario Personal</title>
+    <title>ROLES CARGA</title>
+
+    <!-- Tipografías Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
+      :root {
+        --latam-indigo: #1b0088;
+        --latam-indigo-hover: #12005c;
+        --latam-indigo-light: #eef2f6;
+        --latam-coral: #ed1650;
+        --latam-coral-hover: #c50f3e;
+        --latam-coral-light: #ffebf0;
+        --bg-main: #f3f4f9;
+        --bg-card: #ffffff;
+        --text-primary: #0f0e17;
+        --text-secondary: #5a5d7a;
+        --text-muted: #8e92b2;
+        --border-color: #e2e5f0;
+        --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --shadow-sm: 0 2px 8px rgba(27, 0, 136, 0.04);
+        --shadow-md: 0 8px 24px rgba(27, 0, 136, 0.06);
+        --shadow-lg: 0 16px 40px rgba(27, 0, 136, 0.09);
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
 
       body {
-        font-family: Arial, Helvetica, sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-primary);
         min-height: 100vh;
+        display: flex;
+        overflow-x: hidden;
+      }
+
+      .app-container {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      aside.sidebar {
+        background-color: var(--latam-indigo);
+        color: #ffffff;
+        padding: 40px 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        z-index: 10;
+        transition: var(--transition-normal);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 40px;
+      }
+
+      .brand-logo-dot {
+        width: 10px;
+        height: 10px;
+        background-color: var(--latam-coral);
+        border-radius: 50%;
+        display: inline-block;
+        animation: pulse 2s infinite;
+      }
+
+      .brand h1 {
+        font-family: "Outfit", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: #ffffff;
+      }
+
+      .brand span {
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .profile-card {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 16px;
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        transition: var(--transition-fast);
+      }
+
+      .profile-card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .profile-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--latam-coral);
+        color: white;
+        font-family: "Outfit", sans-serif;
+        font-weight: 700;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f1f5f9;
+        margin-bottom: 10px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
       }
 
-      main {
-        display: grid;
-        grid-template-columns: 300px 600px;
-        gap: 40px;
-        align-items: stretch;
+      .profile-name {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
-      section {
-        background: #ffffff;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        border-radius: 16px;
-        height: 100%;
+
+      .profile-role {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* Navegación */
+      .nav-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex-grow: 1;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: rgba(255, 255, 255, 0.75);
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition-fast);
+      }
+
+      .nav-item svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        transition: var(--transition-fast);
+      }
+
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+      }
+
+      .nav-item.active {
+        background-color: var(--latam-coral);
+        color: #ffffff;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(237, 22, 80, 0.3);
+      }
+
+      .sidebar-footer {
+        font-size: 0.7rem;
+        font-weight: bold;
+        margin-top: auto;
+        text-align: center;
+      }
+
+      main.main-content {
+        padding: 40px;
+        overflow-y: auto;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        max-width: 1400px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      /* --- HEADER DE VISTA --- */
+      .view-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        animation: slideDown 0.4s ease;
+      }
+
+      .view-title-container h2 {
+        font-family: "Outfit", sans-serif;
+        font-size: 1.85rem;
+        font-weight: 700;
+        color: var(--latam-indigo);
+        letter-spacing: -0.5px;
+      }
+
+      .view-title-container p {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-top: 4px;
+      }
+
+      /* Mini Estadísticas de Turnos */
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        width: 100%;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition-fast);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow:  0 8px 24px rgba(94, 218, 150, 0.06);
+      }
+
+    
+      .stat-icon-wrapper {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .stat-icon-wrapper.total {
+        background: #eef2f6;
+        color: var(--latam-indigo);
+      }
+
+      .stat-icon-wrapper.libres {
+        background: #e2f9eb;
+        color: #0a8043;
+      }
+
+      .stat-icon-wrapper.vacaciones {
+        background: #e0f2fe;
+        color: #0369a1;
+      }
+
+      .stat-icon-wrapper.capacitaciones {
+        background: #f3e8ff;
+        color: #6d28d9;
+      }
+
+      .stat-info {
         display: flex;
         flex-direction: column;
       }
 
-      /* LEFT PANEL */
-      .left {
-        padding: 30px 25px;
-        justify-content: flex-start;
-        gap: 25px;
+      .stat-value {
+        font-family: "Outfit", sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--text-primary);
       }
 
-      .left h1 {
+      .stat-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      .content-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        animation: fadeIn 0.6s ease;
+      }
+      /* --- VISTA: FORMULARIO  --- */
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        padding: 30px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .form-group.full-width {
+        grid-column: span 2;
+      }
+
+      .form-group label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--latam-indigo);
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 0.9rem;
+        color: var(--text-primary);
+        background-color: #f8f9fc;
+        transition: var(--transition-fast);
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: var(--latam-indigo);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(27, 0, 136, 0.08);
+      }
+
+      .form-actions {
+        padding: 0 30px 30px 30px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .btn-submit {
+        background-color: var(--latam-indigo);
+        color: #ffffff;
+        border: none;
+        padding: 14px 28px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition-fast);
+      }
+
+      .btn-submit:hover {
+        background-color: var(--latam-indigo-hover);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .btn-submit:active {
+        transform: translateY(0);
+      }
+
+      /* --- VISTA: EQUIPO (DISEÑO MULTI-PANEL) --- */
+      .team-layout {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 30px;
+        align-items: stretch;
+        min-height: 500px;
+      }
+
+      .team-sidebar {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 620px;
+      }
+
+      .team-search-box {
+        position: relative;
+      }
+
+      .team-search-box input {
+        width: 100%;
+        padding: 12px 16px 12px 42px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 0.9rem;
+        color: var(--text-primary);
+        background-color: #f8f9fc;
+        transition: var(--transition-fast);
+      }
+
+      .team-search-box input:focus {
+        outline: none;
+        border-color: var(--latam-indigo);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(27, 0, 136, 0.08);
+      }
+
+      .team-search-box svg {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        stroke: var(--text-muted);
+        fill: none;
+        stroke-width: 2;
+      }
+
+      .TurnoHoy {
+        font-weight: bold;
         font-size: 2rem;
       }
 
-      .left .role {
-        color: #94a3b8;
-        font-size: 0.95rem;
-      }
-
-      .left-buttons {
+      /* Lista de Teammates */
+      .team-list-container {
+        overflow-y: auto;
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
-        gap: 10px;
-      }
-      .left-buttons a {
-        color: white;
-        text-decoration: none;
+        gap: 8px;
+        padding-right: 4px;
       }
 
-      .left-buttons button {
-        padding: 10px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        background: #1e293b;
-        color: white;
-        transition: 0.3s;
+      /* Scrollbar Estilizado */
+      .team-list-container::-webkit-scrollbar,
+      .table-container::-webkit-scrollbar {
+        width: 6px;
       }
 
-      .left-buttons button:hover {
-        background: #0a386d;
+      .team-list-container::-webkit-scrollbar-track,
+      .table-container::-webkit-scrollbar-track {
+        background: transparent;
       }
 
-      /* RIGHT PANEL */
-      .right {
-        padding: 30px;
+      .team-list-container::-webkit-scrollbar-thumb,
+      .table-container::-webkit-scrollbar-thumb {
+        background: #d5d8e4;
+        border-radius: 3px;
       }
-      .title {
-        margin-bottom: 30px;
+
+      .team-list-container::-webkit-scrollbar-thumb:hover,
+      .table-container::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+      }
+
+      .team-member-card {
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background: #f8f9fc;
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 12px;
+        cursor: pointer;
+        transition: var(--transition-fast);
       }
-      .title-h1 {
-        font-size: 1.3rem;
-        margin-bottom: 20px;
-        font-weight: bold;
+
+      .team-member-card:hover {
+        background: var(--latam-indigo-light);
+        border-color: var(--border-color);
+        transform: translateY(-1px);
       }
-      .title p {
-        animation: infinite 1s UpDonwn 0.5s;
+
+      .team-member-card.active {
+        background: var(--latam-indigo-light);
+        border-color: var(--latam-indigo);
       }
-      @keyframes UpDonwn {
-        0% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-5px);
-        }
-        100% {
-          transform: translateY(0);
-        }
+
+      .team-member-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--latam-indigo);
+        color: white;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .team-member-card.active .team-member-avatar {
+        background: var(--latam-coral);
+      }
+
+      .team-member-info {
+        flex-grow: 1;
+        min-width: 0;
+      }
+
+      .team-member-name {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .team-member-today {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-top: 2px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .team-today-indicator {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      /* Detalle de Horario del Teammate */
+      .team-detail-pane {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 620px;
+      }
+
+      .team-detail-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 40px;
+        text-align: center;
+        color: var(--text-muted);
+        gap: 16px;
+      }
+
+      .team-detail-empty svg {
+        width: 64px;
+        height: 64px;
+        stroke: var(--text-muted);
+        stroke-width: 1.5;
+      }
+
+      .team-detail-empty h3 {
+        font-family: "Outfit", sans-serif;
+        font-size: 1.25rem;
+        color: var(--latam-indigo);
+        font-weight: 600;
+      }
+
+      .team-detail-empty p {
+        font-size: 0.85rem;
+        max-width: 320px;
+      }
+
+      /* --- ESTILO DE LA TABLA --- */
+      .table-container {
+        width: 100%;
+        overflow-y: auto;
+        flex-grow: 1;
+        height: 480px;
+        /* Altura perfecta para 15 registros */
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
-        border-radius: 12px;
-        overflow: hidden;
-        background: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-      }
-
-      th {
-        background: #0a386d;
-        color: white;
         text-align: left;
-        padding: 12px;
-        font-size: 1.5rem;
       }
 
-      td {
-        padding: 12px;
-        border-bottom: 1px solid #e2e8f0;
-        font-size: 0.9rem;
+      thead th {
+        background-color: #f8f9fc;
+        color: var(--latam-indigo);
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 14px 24px;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        border-bottom: 2px solid var(--border-color);
       }
 
-      tr:hover {
-        background: #f1f5f9;
+      tbody tr {
+        transition: var(--transition-fast);
+        border-bottom: 1px solid var(--border-color);
       }
-      /* Estados */
-      .turno {
-        color: #16a34a;
-        font-weight: bold;
+
+      tbody tr:hover {
+        background-color: rgba(27, 0, 136, 0.015);
       }
-      .libre {
-        color: #dc2626;
-        font-weight: bold;
+
+      tbody td {
+        padding: 14px 24px;
+        font-size: 0.88rem;
+        color: var(--text-primary);
       }
-      .today {
-        background: #dbeafe;
-        color: #0a386d;
+
+      tbody td.weekday {
+        font-weight: 500;
+        text-transform: capitalize;
       }
-      .today td {
-        font-weight: bold;
-        font-size: 1.1rem;
+
+      tbody td.fecha-col {
+        color: var(--text-secondary);
+        font-variant-numeric: tabular-nums;
       }
-      table {
-        font-size: 0.85rem;
+
+      tbody td.horario-col {
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* --- CONTROLES DE PAGINACIÓN --- */
+      .pagination-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        background: #ffffff;
+        border-top: 1px solid var(--border-color);
+        margin-top: auto;
+      }
+
+      .pagination-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .pagination-btn {
+        background: #ffffff;
+        color: var(--latam-indigo);
+        border: 1px solid var(--border-color);
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: var(--transition-fast);
+      }
+
+      .pagination-btn svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2.5;
+      }
+
+      .pagination-btn:hover:not(:disabled) {
+        background: var(--latam-indigo);
+        color: #ffffff;
+        border-color: var(--latam-indigo);
+        transform: translateY(-1px);
+      }
+
+      .pagination-btn:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      .pagination-btn:disabled {
+        background: #f8f9fc;
+        color: var(--text-muted);
+        border-color: var(--border-color);
+        cursor: not-allowed;
+      }
+
+      #page-info,
+      .page-info-class {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      /* --- BADGES DE JORNADAS (Elegantes y Minimalistas) --- */
+      .badge-turno {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        text-transform: capitalize;
+      }
+
+      .badge-normal {
+        background-color: var(--latam-indigo-light);
+        color: var(--latam-indigo);
+      }
+
+      .badge-libre {
+        background-color: #e2f9eb;
+        color: #0a8043;
+      }
+
+      .badge-capacitacion {
+        background-color: #f3e8ff;
+        color: #6d28d9;
+      }
+
+      .badge-vacacion {
+        background-color: #e0f2fe;
+        color: #0369a1;
+      }
+
+      .badge-saliente {
+        background-color: #f1f5f9;
+        color: #334155;
+      }
+
+     
+      /* --- ANIMACIONES --- */
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(0.9);
+          opacity: 0.8;
+        }
+
+        50% {
+          transform: scale(1.15);
+          opacity: 1;
+        }
+
+        100% {
+          transform: scale(0.9);
+          opacity: 0.8;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* --- CONTENEDORES DE VISTAS (TOGGLEABLE) --- */
+      .view-section {
+        display: none;
+      }
+
+      .view-section.active-view {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        animation: fadeIn 0.4s ease;
+      }
+
+      /* --- RESPONSIVIDAD (MOBILE & TABLET ADAPTATION) --- */
+      @media (max-width: 1024px) {
+        .app-container {
+          grid-template-columns: 240px 1fr;
+        }
+
+        .team-layout {
+          grid-template-columns: 300px 1fr;
+        }
       }
 
       @media (max-width: 900px) {
-        main {
+        .app-container {
+          grid-template-columns: 1fr;
+        }
+
+        aside.sidebar {
+          height: auto;
+          padding: 20px 24px;
+          position: relative;
+          width: 100%;
+        }
+
+        .brand {
+          margin-bottom: 20px;
+        }
+
+        .profile-card {
+          display: none;
+          /* Se oculta o reorganiza en móvil */
+        }
+
+        .nav-list {
+          flex-direction: row;
+          width: 100%;
+          justify-content: space-around;
+          gap: 6px;
+        }
+
+        .nav-item {
+          padding: 10px 12px;
+          font-size: 0.8rem;
+          flex-grow: 1;
+          justify-content: center;
+        }
+
+        main.main-content {
+          padding: 20px;
+          height: auto;
+        }
+
+        .stats-row {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+
+        .team-layout {
           grid-template-columns: 1fr;
           gap: 20px;
-          width: 90%;
         }
 
-        .left,
-        .right {
-          width: 100%;
+        .team-sidebar {
+          height: 380px;
         }
 
-        .left {
+        .team-detail-pane {
+          height: auto;
+          min-height: 400px;
+        }
+
+        /* Tabla responsiva a tarjetas */
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+          display: block;
+        }
+
+        thead tr {
+          position: absolute;
+          top: -9999px;
+          left: -9999px;
+        }
+
+        tbody tr {
+          border: 1px solid var(--border-color);
+          border-radius: 12px;
+          margin-bottom: 12px;
+          background: #ffffff;
+          padding: 12px 16px;
+          box-shadow: var(--shadow-sm);
+        }
+
+        tbody td {
+          border: none;
+          padding: 6px 0;
+          position: relative;
+          padding-left: 45%;
+          text-align: right;
+          font-size: 0.85rem;
+        }
+
+        tbody td::before {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 40%;
+          text-align: left;
+          font-weight: 600;
+          color: var(--latam-indigo);
+          font-size: 0.75rem;
+          text-transform: uppercase;
+        }
+
+        tbody td:nth-of-type(1)::before {
+          content: "Fecha:";
+        }
+
+        tbody td:nth-of-type(2)::before {
+          content: "Día:";
+        }
+
+        tbody td:nth-of-type(3)::before {
+          content: "Horario:";
+        }
+
+        tbody td:nth-of-type(4)::before {
+          content: "Turno:";
+        }
+
+        tbody td.weekday {
+          text-transform: capitalize;
+        }
+
+        .pagination-container {
+          flex-direction: column;
+          gap: 12px;
+          padding: 16px;
           align-items: center;
-          text-align: center;
-        }
-
-        .left-buttons {
-          width: 100%;
-        }
-
-        .left-buttons button {
-          width: 100%;
         }
       }
     </style>
   </head>
 
   <body>
-    <main>
-      <!-- LEFT -->
-      <section class="left">
+
+
+
+    <div class="app-container">
+      <!-- SIDEBAR DE NAVEGACIÓN -->
+      <aside class="sidebar">
         <div>
-          <h1>Nombre de la persona</h1>
-          <p class="role">Area de la persona</p>
+          <div class="brand">
+            <span class="brand-logo-dot"></span>
+            <h1>Roles Carga</h1>
+          </div>
+
+          <div class="profile-card">
+            <div class="profile-avatar" id="prof-avatar-letter">A</div>
+            <div class="profile-name" id="prof-name">Alejandro Perez</div>
+            <div class="profile-role" id="prof-area">Capacity Planning</div>
+          </div>
+
+          <ul class="nav-list">
+            <li>
+              <div
+                class="nav-item active"
+                id="nav-mi-horario"
+                onclick="cambiarVista('mi-horario')"
+              >
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>Mi Horario</span>
+              </div>
+            </li>
+            <li>
+              <div
+                class="nav-item"
+                id="nav-ver-equipo"
+                onclick="cambiarVista('equipo')"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <span>Buscar Personal</span>
+              </div>
+            </li>
+            <li>
+              <div class="nav-item" id="nav-ver-areas">
+                <span>Ver Areas </span>
+              </div>
+            </li>
+            <li>
+              <div
+                class="nav-item"
+                id="nav-ver-formulario"
+                onclick="cambiarVista('formulario')"
+              >
+                <span>Solicitud dias libres </span>
+              </div>
+            </li>
+
+            <!--
+          <li>
+            <a class="nav-item" href="#" id="nav-capacitaciones"
+              onclick="alert('Capacitaciones: Redirigiendo a academia LATAM...')">
+              <svg viewBox="0 0 24 24">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+              </svg>
+              <span>Capacitaciones</span>
+            </a>
+          </li>
+            -->
+          </ul>
         </div>
 
-        <div class="left-buttons">
-          <button><a href="">Capacitaciones</a></button>
-          <button id="Ver horario equipo">Ver equipo</button>
-        </div>
-      </section>
+        <div class="sidebar-footer">Capacity Planning PHH Carga</div>
+      </aside>
 
-      <!-- RIGHT -->
-      <section class="right">
-        <table>
-          <thead>
-            <tr>
-              <th>Día</th>
-              <th>Dia semana</th>
-              <th>Horario</th>
-              <th>Jornada</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>01/02/2026</td>
-              <td class="turno">Lunes</td>
-              <td class="turno">Turno</td>
-              <td class="turno">9:00 - 18:00</td>
-            </tr>
-            <tr>
-              <td>01/02/2026</td>
-              <td>Martes</td>
-              <td>Turno</td>
-              <td>9:00 - 18:00</td>
-            </tr>
-            <tr>
-              <td>01/02/2026</td>
-              <td>Miercoles</td>
-              <td>Turno</td>
-              <td>9:00 - 18:00</td>
-            </tr>
-            <tr>
-              <td>01/02/2026</td>
-              <td>Jueves</td>
-              <td>Turno</td>
-              <td>9:00 - 18:00</td>
-            </tr>
-            <tr>
-              <td>01/02/2026</td>
-              <td>Viernes</td>
-              <td>Turno</td>
-              <td>9:00 - 18:00</td>
-            </tr>
-            <tr>
-              <td>01/02/2026</td>
-              <td>Sabado</td>
-              <td>Turno</td>
-              <td>9:00 - 18:00</td>
-            </tr>
-            <tr>
-              <td>01/02/2026</td>
-              <td>Domingo</td>
-              <td>Turno</td>
-              <td>9:00 - 18:00</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
+      <!-- PANEL PRINCIPAL -->
+      <main class="main-content">
+        <!-- ================= VISTA: MI HORARIO ================= -->
+        <section class="view-section active-view" id="section-mi-horario">
+          <div class="view-header">
+            <div class="view-title-container">
+              <h2 id="title-name-personal">Turnos del mes</h2>
+              <p>Tu horario mas mano que nunca</p>
+            </div>
+          </div>
+
+          <!-- Estadísticas de Turnos -->
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-icon-wrapper total">📅</div>
+              <div class="stat-info">
+                <span class="stat-value" id="stat-total">30</span>
+                <span class="stat-label">Total Días</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper libres">😊</div>
+              <div class="stat-info">
+                <span class="stat-value" id="stat-libres">4</span>
+                <span class="stat-label">Días Libres</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper vacaciones">🏖️</div>
+              <div class="stat-info">
+                <span class="stat-value" id="stat-vacaciones">0</span>
+                <span class="stat-label">Vacaciones</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper capacitaciones">🤓</div>
+              <div class="stat-info">
+                <span class="stat-value" id="stat-caps">0</span>
+                <span class="stat-label">Capacitación</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card de Tabla de Turnos -->
+          <div class="content-card">
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Día de la semana</th>
+                    <th>Horario</th>
+                    <th>Turno</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>03/06/2026</td>
+                    <td>Miércoles</td>
+                    <td>08:00 - 17:00</td>
+                    <td>
+                      <span class="badge-turno badge-normal">Turno A</span>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>04/06/2026</td>
+                    <td>Jueves</td>
+                    <td>-</td>
+                    <td><span class="badge-turno badge-libre">Libre</span></td>
+                  </tr>
+
+                  <tr>
+                    <td>05/06/2026</td>
+                    <td>Viernes</td>
+                    <td>09:00 - 18:00</td>
+                    <td>
+                      <span class="badge-turno badge-capacitacion"
+                        >Capacitación</span
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Controles de Paginación -->
+            <div class="pagination-container">
+              <span id="personal-page-info" class="page-info-class"
+                >Página 1 de 1</span
+              >
+              <div class="pagination-buttons">
+                <button
+                  class="pagination-btn"
+                  id="personal-btn-prev"
+                  onclick="cambiarPaginaPersonal(-1)"
+                  disabled
+                >
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                  Anterior
+                </button>
+                <button
+                  class="pagination-btn"
+                  id="personal-btn-next"
+                  onclick="cambiarPaginaPersonal(1)"
+                  disabled
+                >
+                  Siguiente
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VISTA: EQUIPO ================= -->
+        <section class="view-section" id="section-equipo">
+          <div class="view-header">
+            <div class="view-title-container">
+              <h2>Planificación del Equipo</h2>
+              <p>
+                Conoce el rol de tus compañeros del área para coordinar turnos.
+              </p>
+            </div>
+          </div>
+
+          <div class="team-layout">
+            <!-- Barra Lateral del Equipo (Buscador y Teammates) -->
+            <div class="team-sidebar">
+              <div class="team-search-box">
+                <input
+                  type="text"
+                  id="team-search-input"
+                  oninput="filtrarEquipo()"
+                  placeholder="Buscar compañero 🔍"
+                />
+              </div>
+
+              <div class="team-member-card active">
+                <div class="team-member-avatar">AP</div>
+
+                <div class="team-member-info">
+                  <div class="team-member-name">Alejandro Pérez</div>
+
+                  <div class="team-member-today">
+                    <span
+                      class="team-today-indicator"
+                      style="background: #ed1650"
+                    ></span>
+
+                    Hoy: Turno A
+                  </div>
+                </div>
+              </div>
+
+              <div class="team-member-card">
+                <div class="team-member-avatar">JP</div>
+
+                <div class="team-member-info">
+                  <div class="team-member-name">Juan Pérez</div>
+
+                  <div class="team-member-today">
+                    <span
+                      class="team-today-indicator"
+                      style="background: #0a8043"
+                    ></span>
+
+                    Hoy: Libre
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel de Detalle del Horario del Colaborador -->
+            <div class="team-detail-pane" id="teammate-detail-container">
+              <div class="team-detail-empty">
+                🤔
+                <h3>Ningún colaborador seleccionado</h3>
+                <p>
+                  Selecciona un miembro del equipo en la barra lateral para
+                  visualizar el detalle completo de su programación de turnos.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VISTA: Formulario ================= -->
+
+        <section class="view-section" id="section-formulario">
+          <div class="view-header">
+            <div class="view-title-container">
+              <h2>Solicitud de Días Libres</h2>
+              <p>
+                Días del mes que debemos considerar dentro de tu disponibilidad
+                planificada
+              </p>
+            </div>
+          </div>
+
+          <div class="content-card">
+            <form action="" method="post" onsubmit="event.preventDefault()">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="funcionario-nombre">Nombre del funcionario</label>
+                  <input
+                    type="text"
+                    id="funcionario-nombre"
+                    placeholder="Ej. Juan Pérez"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="areas">Área</label>
+                  <input
+                    list="Areas"
+                    name="areas"
+                    id="areas"
+                    placeholder="Selecciona o escribe el área..."
+                  />
+                  <datalist id="Areas">
+                    <option value="Fast Export"></option>
+                    <option value="IPC"></option>
+                    <option value="ARI-CPO"></option>
+                    <option value="PMC"></option>
+                    <option value="ANF"></option>
+                  </datalist>
+                </div>
+
+                <div class="form-group">
+                  <label for="funcionario-ceco">Ceco</label>
+                  <input
+                    type="text"
+                    id="funcionario-ceco"
+                    placeholder="ej:UCCLSCLG34 "
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="funcionario-bp">Bp</label>
+                  <input
+                    type="text"
+                    id="funcionario-bp"
+                    placeholder="ej: 6008525 "
+                    required
+                  />
+                </div>
+
+                <div class="form-group full-width">
+                  <label for="fecha-seleccion">Fecha a escoger</label>
+                  <input type="date" id="fecha-seleccion" required />
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                  Enviar Solicitud
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- ================= VISTA: Area ================= -->
+      </main>
+    </div>
+
+    <script>
+      function cambiarVista(vistaId) {
+        // Quitar activo de todos los botones
+        document.querySelectorAll(".nav-item").forEach((item) => {
+          item.classList.remove("active");
+        });
+
+        // Activar botón seleccionado
+        const navActivo = document.getElementById(`nav-${vistaId}`);
+        if (navActivo) {
+          navActivo.classList.add("active");
+        }
+
+        // Ocultar todas las vistas
+        document.querySelectorAll(".view-section").forEach((section) => {
+          section.classList.remove("active-view");
+        });
+
+        // Mostrar vista seleccionada
+        const vista = document.getElementById(`section-${vistaId}`);
+        if (vista) {
+          vista.classList.add("active-view");
+        }
+      }
+    </script>
   </body>
 </html>
-<script src="index.js"></script>
